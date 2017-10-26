@@ -125,7 +125,7 @@ define docker::services(
   $exec_create = "${docker_command} create --name ${docker_service_create_flags}"
   $unless_create = "docker service ls | grep -w ${service_name}"
 
-  exec { 'Docker service create':
+  exec { "Docker service create for $service_name":
     command     => $exec_create,
     environment => 'HOME=/root',
     path        => ['/bin', '/usr/bin'],
@@ -151,7 +151,7 @@ define docker::services(
 
   $exec_update = "${docker_command} update ${docker_service_flags}"
 
-  exec { 'Docker service update':
+  exec { "Docker service update for $service_name":
     command     => $exec_update,
     environment => 'HOME=/root',
     path        => ['/bin', '/usr/bin'],
@@ -168,7 +168,7 @@ define docker::services(
 
   $exec_scale = "${docker_command} scale ${docker_service_flags}"
 
-  exec { 'Docker service scale':
+  exec { "Docker service scale for for $service_name":
     command     => $exec_scale,
     environment => 'HOME=/root',
     path        => ['/bin', '/usr/bin'],
@@ -177,7 +177,7 @@ define docker::services(
   }
 
   if $ensure == 'absent' {
-    exec { 'Remove service':
+    exec { "Remove service for $service_name":
       command => "docker service rm ${service_name}",
       onlyif  => "docker service ls | grep -w ${service_name}",
       path    => ['/bin', '/usr/bin'],
